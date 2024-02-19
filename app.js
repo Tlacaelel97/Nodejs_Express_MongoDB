@@ -1,3 +1,6 @@
+// dotenv
+require("dotenv").config();
+
 // Llamamos a express para configurar el server http
 const express = require("express");
 const app = express();
@@ -6,14 +9,16 @@ const port = process.env.PORT || 3000;
 // Conexion a base de datos
 const mongoose = require("mongoose");
 
-const user = 'veterinario';
-const password = 'brfD43XSRVNAarV1';
-const dbname = 'veterinaria';
-const url = `mongodb+srv://${user}:${password}@cluster0.cipuqrm.mongodb.net/${dbname}?retryWrites=true&w=majority`;
+const url = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.cipuqrm.mongodb.net/${process.env.DBNAME}?retryWrites=true&w=majority`;
 
-mongoose.connect(url)
-.then(() => { console.log('Conectado a MongoDB') })
-.catch((err) => { console.error('Error al conectar a MongoDB',err)});
+mongoose
+  .connect(url)
+  .then(() => {
+    console.log("Conectado a MongoDB");
+  })
+  .catch((err) => {
+    console.error("Error al conectar a MongoDB", err);
+  });
 
 //Motor de plantillas
 app.set("view engine", "ejs");
