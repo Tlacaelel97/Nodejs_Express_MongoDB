@@ -2,6 +2,19 @@
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
+
+// Conexion a base de datos
+const mongoose = require("mongoose");
+
+const user = 'veterinario';
+const password = 'brfD43XSRVNAarV1';
+const dbname = 'veterinaria';
+const url = `mongodb+srv://${user}:${password}@cluster0.cipuqrm.mongodb.net/${dbname}?retryWrites=true&w=majority`;
+
+mongoose.connect(url)
+.then(() => { console.log('Conectado a MongoDB') })
+.catch((err) => { console.error('Error al conectar a MongoDB',err)});
+
 //Motor de plantillas
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views"); // Directorio donde se encuentran las vistas
@@ -11,7 +24,7 @@ app.use(express.static(__dirname + "/public"));
 
 // RutasWeb
 app.use("/", require("./router/RutasWeb"));
-app.use("/mascotas",require("./router/Mascotas"))
+app.use("/mascotas", require("./router/Mascotas"));
 
 app.use((req, res, next) => {
   res.status(404).render("404", {
